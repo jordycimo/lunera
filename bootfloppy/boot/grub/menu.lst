@@ -1,0 +1,22 @@
+﻿# Lunera boot menu
+ 
+color blue/black black/light-gray
+
+title Boot Lunera (Floppy A)
+    root (hd0,0)
+    kernel /boot/bzImage
+    initrc /boot/initrd.cpio.bz
+    boot
+
+title Install GRUB on floppy A (fd0)
+    pause Insert a floppy disk into drive A, and press any key.   
+    root (fd0)
+    setup (fd0)
+    pause Operation complete.
+
+title Reboot
+    reboot
+
+title Halt / Power
+    halt
+
