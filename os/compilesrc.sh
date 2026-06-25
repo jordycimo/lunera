@@ -1,4 +1,13 @@
 #!/bin/bash
+
+# remove old
+cd "$(echo $HOME | tr -d '\r')/Documents/lunera/os/initramfs/bin"
+for f in *; do
+    echo "rm $f" ;
+    rm $f;
+done
+
+# now compile
 cd "$(echo $HOME | tr -d '\r')/Documents/lunera/os/src/bin"
 for f in *; do
     out=${f%".c"}
