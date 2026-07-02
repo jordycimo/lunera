@@ -1,28 +1,33 @@
 #include <stdio.h>
+#include <errno.h>
 #include <unistd.h>
-#include <linux/limits.h>
 #include <string.h>
 
 int main(int argc, char* argv[]) {
-    char cwd[PATH_MAX];
-    int mode = 0; // default to relative path
+    int mode = 0; // default mode 0: relative pathing; 1 is exact pathing
+    int force = 0; // default force 0: dont overwrite; 1 to force writing
 
-    if(mode == 0) {
-        // mode 0: relative pathing, filenames will have the cwd appended to the front of them.
-        if(getcwd(cwd, sizeof(cwd)) == NULL) {
-            perror("error in getcwd");
-            return -1;
+    if (argv[1] == NULL || argv[2] == NULL) {
+        printf("mv: expected 2 arguments, \"mv [source] [dest]\"");
+        return 1;
+    }
+
+    if (strcmp(args[1], "-f") == 0) {
+        force = 1;
+    }
+
+    if (mode == 0) {
+        if (access(arg[2], F_OK)) {
+            perror("destination exists! -f to force");
+            return 1;
         }
 
-        char file[PATH_MAX] = ""; // file variable will hold the entire path to the file
+        if (rename(argv[1], argv[2])) {
+            perror("rename");
 
-        strcat(file, cwd);
-        strcat(file, "/");
-        strcat(file, argv[1]);
-        printf("%s",file);
-
-    } else if (mode == 1) {
-        // mode 1: exact pathing, filenames will be treated exactly and will not have cwd apended.
+        } else {
+            printf("%s -> ", argv[1]);
+            printf("%s\n", argv[2]);
+        }
     }
-    return 0;
 }
